@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   flame: ^1.38.2
+  flame_tiled: ^3.1.2
   flutter:
     sdk: flutter
 
@@ -20,4 +21,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - assets/images/
+    - assets/images/Terrain/
+    - assets/images/HUD/
+    - assets/images/Main Characters/Mask Dude/ 
+    - assets/images/Main Characters/Ninja Frog/ 
+    - assets/images/Main Characters/Pink Man/ 
+    - assets/images/Main Characters/Virtual Guy/ 
+    - assets/tiles/
