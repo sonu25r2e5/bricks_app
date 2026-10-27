@@ -6,7 +6,7 @@ import 'package:flame/components.dart';
 enum EnemyState { idle, running }
 
 class Enemy extends SpriteAnimationGroupComponent
-    with HasGameReference<PixelAdventure> {
+    with HasGameReference<SpaceShooterGame> {
   String character;
   Enemy({required this.character});
 

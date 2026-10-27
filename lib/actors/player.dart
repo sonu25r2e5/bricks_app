@@ -11,7 +11,7 @@ enum PlayerState { idle, running }
 enum PlayerDirection { right, left, none }
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameReference<PixelAdventure>, KeyboardHandler {
+    with HasGameReference<SpaceShooterGame>, KeyboardHandler {
   Player({position, this.character = 'Ninja Frog'}) : super(position: position);
 
   PlayerDirection playerDirection = PlayerDirection.none;

@@ -1,5 +1,7 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
@@ -7,61 +9,30 @@ void main() {
   runApp(GameWidget(game: SpaceShooterGame()));
 }
 
-// class Player extends PositionComponent {
-//   static final _point = Paint()..color = Colors.white;
-
-//   @override
-//   void render(Canvas canvas) {
-//     super.render(canvas);
-//     canvas.drawRect(
-//       Rect.fromCenter(center: Offset.zero, width: size.x, height: size.y),
-//       _point,
-//     );
-//   }
-
-//   // for moving the object we use this. one.
-//   void move(Vector2 delta) {
-//     position.add(delta);
-//   }
-// }
-class Player extends SpriteComponent with HasGameReference {
-  @override
-  Future<void> onLoad() async {
-    await super.onLoad();
-
-    sprite = await game.loadSprite('ball.png');
-
-    position = game.size / 2;
-  }
-
-  void move(Vector2 delta) {
-    position.add(delta);
-  }
-}
-
-class SpaceShooterGame extends FlameGame with DragCallbacks {
+class SpaceShooterGame extends FlameGame
+    with DragCallbacks, HasCollisionDetection {
   late Player player;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
+    images.prefix = 'assets/';
     player = Player();
-
     add(player);
+
+    add(
+      SpawnComponent(
+        factory: (index) => Enemy(),
+        period: 1,
+        area: Rectangle.fromLTWH(0, -Enemy.enemySize, size.x, Enemy.enemySize),
+      ),
+    );
   }
 
-  void addJoyStick() {
-    // adding joystick file here.
-    joystick = JoystickComponent(
-      knob: SpriteComponent(sprite: Sprite(images.fromCache('HUD/knob.png'))),
-      background: SpriteComponent(
-        sprite: Sprite(images.fromCache('HUD/Joystick.png')),
-      ),
-      knobRadius: 32,
-      margin: EdgeInsets.only(left: 42, bottom: 42),
-    );
-    add(joystick);
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    player.move(event.localDelta);
   }
 
   @override
@@ -72,7 +43,6 @@ class SpaceShooterGame extends FlameGame with DragCallbacks {
 
   @override
   void onDragEnd(DragEndEvent event) {
-    // TODO: implement onDragEnd
     super.onDragEnd(event);
     player.stopShooting();
   }
